@@ -1,17 +1,33 @@
 import numpy as np
+import pylab as pl
 
 def Newton_Raphson(f, J, U0, N, epsilon):
     i = 0
-    while(i < N and np.linalg.norm(U0 - f(U0)) > epsilon):
-        U0 = np.linalg.lstsq(J(U0), f(U0))
+    while(i < N and np.linalg.norm(U0) > epsilon):
+        U0 = U0 + np.linalg.lstsq(J(U0), -f(U0))
         i += 1
+    if (i == N):
+        display("Error : Solution not found")
     return UO
 
 def Newton_real(f, f1, x0, N, epsilon):
     i = 0
     x = []
     y = []
-    while(i < N and np.linalg.norm(x0 - f(x0)) > epsilon):
-        x0 = np.linalg.lstsq((x0), f(x0))
+    x += [x0]
+    y += [0]
+    x += [x0]
+    y += [f(x0)]
+    while(i < N and f(x0) > epsilon):
+        x0 = x0 - f(x0)/f1(x0)
+        x += [x0]
+        y += [0]
+        x += [x0]
+        y += [f(x0)]
         i += 1
-    return xO
+    xf = np.linspace(-20,20,100)
+    yf = [f(i) for i in xf]
+    pl.grid(True)
+    pl.plot(x, y)
+    pl.plot(xf, yf)
+    pl.show()

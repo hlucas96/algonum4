@@ -1,14 +1,14 @@
 import numpy as np
 # import scipy.optimize as spyo
 from newton import Newton_Raphson
+# np.set_printoptions(suppress=True) # for beauty
 
 
-delta_t = 1
-delta_x = 0.1
+# global value, vector and matrix to init
+delta_t = 0.2
+delta_x = 0.2
 epsilon = 0.1
-
-# global vector and matrix
-size = 3
+size = 1 # juste in order to declare global variable here
 Un = np.empty(size)
 DG_matrix = np.empty([size, size])
 
@@ -26,8 +26,12 @@ c = (1 / delta_2x) - (2 * i_plus_2)
 
 
 # init Un and GD_matrix
-def init_kdv(X0):
-        global Un, DG_matrix
+def init_kdv(X0, dx, dt, eps):
+        global delta_x, delta_t, espilon, Un, DG_matrix
+
+        delta_x = dx
+        delta_t = dt
+        epsilon = eps
         
         n = len(X0)
         Un = np.copy(X0)
@@ -42,6 +46,7 @@ def init_kdv(X0):
                 DG_matrix[i + 2][i] = i_minus_2
         DG_uptade(X0)
 
+        
 # update DG_matrix,
 # juste need to change two diagonal thus O(n)
 def DG_uptade(U):
@@ -76,17 +81,17 @@ def G(U):
 	V[i] += b * (U[1] - 2*U[0] + 2*U[i-1] - U[i-2])
 	return V
 
+
 def F(U):
 	return ((U - Un) / delta_t) + G((Un + U) / 2)
 
 def DF(U):
         return ((1/delta_t) * np.identity(len(U)) + (DG((U - Un) / 2) / 2))
 
+
 def next_kdv(U):
         global Un
-        Un = Newton_Raphson(F, DF, U, 8, 0.01)
+        Un = Newton_Raphson(F, DF, U, 5, 1)
         return Un
 
-
-np.set_printoptions(suppress=True)
 

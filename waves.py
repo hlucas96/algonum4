@@ -6,9 +6,11 @@ from KdV import init_kdv, next_kdv
 
 
 fig, ax = plt.subplots()
-L = 20.0
+L = 15.0
 N = 200
 alpha = 1
+dt = 0.8
+esp = 0.1
 
 xaxis = np.empty(N)
 yaxis = np.empty(N)
@@ -30,9 +32,8 @@ def init():
         xaxis[i] = ((2.0 * i - N + 1)/(N-1)) * L
     yaxis = X0(alpha)
 
-    # intitate KdV equation with
-    #        X0     dx   dt  espilon
-    init_kdv(yaxis, L/N, 1., 0.1)    
+    # intitate KdV equation
+    init_kdv(yaxis, L/N, dt, esp)    
 
     wave.set_data(xaxis, yaxis)
     return wave,    

@@ -20,7 +20,7 @@ def Newton_Raphson_backtracking(f, J, U0, N, epsilon):
         i += 1
     return U0
 
-def Newton_real(f, f1, x0, N, epsilon):
+def Newton_real(f, f1, x0, N, epsilon, a, b):
     i = 0
     x = []
     y = []
@@ -35,7 +35,34 @@ def Newton_real(f, f1, x0, N, epsilon):
         x += [x0]
         y += [f(x0)]
         i += 1
-    xf = np.linspace(-20,20,100)
+    xf = np.linspace(a, b,100)
+    yf = [f(i) for i in xf]
+    pl.grid(True)
+    pl.plot(x, y)
+    pl.plot(xf, yf)
+    pl.show()
+
+def Newton_real_backtracking(f, f1, x0, N, epsilon, a, b):
+    i = 0
+    x = []
+    y = []
+    x += [x0]
+    y += [0]
+    x += [x0]
+    y += [f(x0)]
+    while(i < N and f(x0) > epsilon):
+        last = x0
+        x0 = x0 - f(x0)/f1(x0)
+        x += [x0]
+        y += [0]
+        while(abs(f(x0)) > abs(f(last))):
+            x0 = (x0 + last)/2
+            x += [x0]
+            y += [0]
+        x += [x0]
+        y += [f(x0)]
+        i += 1
+    xf = np.linspace(a, b,100)
     yf = [f(i) for i in xf]
     pl.grid(True)
     pl.plot(x, y)

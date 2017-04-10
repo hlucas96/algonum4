@@ -1,12 +1,13 @@
 from math import *
 import numpy as np
-import matplotlib as plt 
+import matplotlib.pyplot as plt 
 import newton as nr
 
 epsilon = 0.05
 iteration_number = 10
 
 def energy_electrostatic(E):
+    n = len(E)
     x = 0
     for i in range (0, n):
         x += log(abs(E[i] + 1)) + log(abs(E[i] - 1))
@@ -16,7 +17,7 @@ def energy_electrostatic(E):
         for j in range (i + 1, n):
             s += log(abs(E[i] - E[j]))
         x += (s/2)
-    return x
+    return np.full(n,x)
 
 def jacobian_electrostatic(E):
     n = len(E)
@@ -32,13 +33,10 @@ def jacobian_electrostatic(E):
 
 def draw_electrostatic(E):
     X = nr.Newton_Raphson(energy_electrostatic, jacobian_electrostatic, E, iteration_number, epsilon)
-    charges = plt.plot(E, X, linewidth = 1.0)
-    plt.legend([energy], ["charges positions"])
+    charges = plt.plot(X, linestyle = 1.0)
+    plt.legend(charges, "charges positions")
     plt.show()
 
 n = 9
-E = np.empty(n)
-for i in range (0, n):
-    E[i] = (i + 1)/n
-E[n - 1] = 8
+E = np.random.rand(n) * 2 - 1
 draw_electrostatic(E)

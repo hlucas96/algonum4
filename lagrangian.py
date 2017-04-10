@@ -22,22 +22,20 @@ def J_gravitational_force(u, u0, k):
 
 
 def Newton_example(U):
-    u0 = np.array([[0], [0]])
+
     k1 = 1
     u01 = np.array([[0], [0]])
-    GF1 = gravitational_force(U, u01, k1)
 
     k2 = 0.01
     u02 = np.array([[1], [0]])
-    GF2 = gravitational_force(U, u02, k2)
 
     k = 1
-    u03 = np.array([[0], [0]])
+    u03 = np.array([[0.01/1.01], [0]])
 
     f = lambda U: gravitational_force(U, u01, k1) + gravitational_force(U, u02, k2) + centrifugal_force(U, u03, k)
     J = lambda U: J_gravitational_force(U, u01, k1) + J_gravitational_force(U, u02, k2) + J_centrifugal_force(U, u03, k)
 
-    return Newton_Raphson_backtracking(f, J, U, 100, 0.01)
+    return Newton_Raphson(f, J, U, 10000, 0.01)
 
-U = np.array([[1.5], [0]])
+U = np.array([[0.5], [0]])
 print(Newton_example(U))

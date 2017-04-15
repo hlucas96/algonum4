@@ -55,20 +55,22 @@ def draw_electrostatic(E):
     colors = "red", "blue", "green", "cyan", "purple", "orange", "magenta" 
 
     #drawing the 8 first polynomials.
-    for n in range (1, 8, 1):
+    for n in range (3, 8, 1):
         #array of 0.
         T = np.zeros(n)
         #put the coefficient relate to the polynomial wanted to 1
         T[n - 1] = 1
         #give the polynomial
         L = npl.Legendre(T)
-        yaxis = L(xaxis)
+        #the derivative of the polynomial
+        D = npl.Legendre.deriv(L)
+        yaxis = D(xaxis)
         plt.plot(xaxis, yaxis, color=colors[n-1])
 
     plt.show()
 
 #size of the vector E
-n = 15
+n = 11
 
 #random number between [-1,1]
 E = np.random.rand(n) * 2 - 1
